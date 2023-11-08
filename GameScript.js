@@ -3,12 +3,14 @@ var attempts = [];
 var correct = 0;
 var totalGuesses = 0;
 var currentGameGuesses = 0;
+var winStreak = 0;
 
 const messages = document.getElementById("messages");
 const currentCorrect = document.getElementById("currentCorrect");
 const gamesPlayedElement = document.getElementById("gamesPlayed");
 const totalGuessesElement = document.getElementById("totalGuesses");
 const avgGuessesElement = document.getElementById("avgGuesses");
+const winStreakElement = document.getElementById("winStreak");
 
 function loadedPage() {
     console.log("current word is " + word);
@@ -29,6 +31,9 @@ function loadedPage() {
         word = localStorage.getItem("word");
         console.log("reloaded word " + word);
     }
+    if (localStorage.getItem("winStreak") != null) {
+        winStreak = localStorage.getItem("winStreak");
+    }
 
     currentCorrect.innerHTML = correct;
     var guessesSum = parseInt(totalGuesses) + parseInt(currentGameGuesses);
@@ -39,6 +44,7 @@ function loadedPage() {
     else {
         avgGuessesElement.innerHTML = parseFloat(parseInt(totalGuesses)+parseInt(currentGameGuesses))/parseFloat(correct);
     }
+    winStreakElement.innerHTML = winStreak;
 }
 
 function resetHistory() {
@@ -49,11 +55,17 @@ function resetHistory() {
     correct = 0;
     totalGuesses = 0;
     currentGameGuesses = 0;
+    winStreak = 0;
     attempts = [];
     currentCorrect.innerHTML = correct;
     totalGuessesElement.innerHTML = totalGuesses;
     avgGuessesElement.innerHTML = 0;
+    winStreakElement.innerHTML = winStreak;
     guessbox.setAttribute("readonly", "readonly");
+    localStorage.winStreak = winStreak;
+    localStorage.setItem("attempts", attempts);
+    localStorage.setItem("correct", correct);
+    localStorage.setItem("totalGuesses", totalGuesses);
 }
 
 
@@ -79,6 +91,7 @@ function setUpGame(newWord) {
     localStorage.setItem("correct", correct);
     localStorage.setItem("totalGuesses", totalGuesses);
     localStorage.setItem("attempts", attempts);
+    winStreakElement.innerHTML = winStreak;
 }
 
 function newWord(newWord){
@@ -111,9 +124,15 @@ function submitGuess(guess){
         var guessesSum = totalGuesses + currentGameGuesses;
         console.log(guessesSum);
         totalGuessesElement.innerHTML = parseInt(guessesSum);
+        winStreak++;
+        localStorage.setItem("winStreak", winStreak);
+        winStreakElement.innerHTML = winStreak;
     }
     else{
-        alert("wrong");
+        alert("Wrong");
+        winStreak = 0;
+        localStorage.setItem("winStreak", winStreak);
+        winStreakElement.innerHTML = winStreak;
     }
     attempts.push(attempt);
     localStorage.setItem("attempts", attempts);
