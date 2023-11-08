@@ -25,7 +25,6 @@ function loadedPage() {
     }
     if (localStorage.getItem("currentGameGuesses") != null) {
         currentGameGuesses = localStorage.getItem("currentGameGuesses");
-        guessbox.removeAttribute("readonly");
     }
     if (localStorage.getItem("word") != null) {
         word = localStorage.getItem("word");
@@ -111,9 +110,7 @@ function submitGuess(guess){
     var guessesSum = parseInt(totalGuesses) + parseInt(currentGameGuesses);
     totalGuessesElement.innerHTML = parseInt(guessesSum);
     if(guess==word){
-        //setupMessage(attempt);
-        getRandomWord(newWord);
-        alert("CORRECT!");
+        setupMessage(attempt);
         correct++;
         currentCorrect.innerHTML = correct;
         localStorage.setItem("correct", correct);
@@ -127,6 +124,8 @@ function submitGuess(guess){
         winStreak++;
         localStorage.setItem("winStreak", winStreak);
         winStreakElement.innerHTML = winStreak;
+        guessbox.setAttribute("readonly", "readonly");
+        alert("CORRECT!");
     }
     else{
         alert("Wrong");
