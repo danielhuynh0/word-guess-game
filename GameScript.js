@@ -11,13 +11,24 @@ function setupGame(newWord){
     }
 }
 
-function setUpMessage(attempt){
+function newWord(newWord){
+    word = newWord;
+}
+
+function setupMessage(){
 
 }
 
 function submitGuess(guess){
+    var attempt={Status:"Correct!", Char:0, Loc:0, Length:"long"}
     guess = guess.toLowerCase();
-    if(guess)
+    if(guess==word){
+        setupMessage(attempt);
+        getRandomWord(newWord);
+    }
+    else{
+        
+    }
 }
 
 function submitForm(){
