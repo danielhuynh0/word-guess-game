@@ -70,6 +70,12 @@ function setUpGame(newWord) {
     localStorage.setItem("currentGameGuesses", currentGameGuesses);
     var guessesSum = parseInt(totalGuesses) + parseInt(currentGameGuesses);
     totalGuessesElement.innerHTML = parseInt(guessesSum);
+    if(correct == 0) {
+        avgGuessesElement.innerHTML = 0;
+    }
+    else {
+        avgGuessesElement.innerHTML = parseFloat(parseInt(totalGuesses)+parseInt(currentGameGuesses))/parseFloat(correct);
+    }
     localStorage.setItem("correct", correct);
     localStorage.setItem("totalGuesses", totalGuesses);
     localStorage.setItem("attempts", attempts);
