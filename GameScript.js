@@ -2,6 +2,7 @@ var word = null;
 var attempts = [];
 var correct = 0;
 var totalGuesses = 0;
+var currentGameGuesses = 0;
 
 const messages = document.getElementById("messages");
 const currentCorrect = document.getElementById("currentCorrect");
@@ -10,10 +11,9 @@ const totalGuessesElement = document.getElementById("totalGuesses");
 const avgGuessesElement = document.getElementById("avgGuesses");
 
 function loadedPage() {
-    console.log("loaded page");
+    console.log("current word is " + word);
     if (localStorage.getItem("totalGuesses") != null) {
         totalGuesses = localStorage.getItem("totalGuesses");
-        guessbox.removeAttribute("readonly");
     }
     if (localStorage.getItem("correct") != null) {
         correct = localStorage.getItem("correct");
@@ -21,23 +21,34 @@ function loadedPage() {
     if (localStorage.getItem("attempts") != null) {
         attempts = localStorage.getItem("attempts");
     }
+    if (localStorage.getItem("currentGameGuesses") != null) {
+        currentGameGuesses = localStorage.getItem("currentGameGuesses");
+        guessbox.removeAttribute("readonly");
+    }
+    if (localStorage.getItem("word") != null) {
+        word = localStorage.getItem("word");
+        console.log("reloaded word " + word);
+    }
 
     currentCorrect.innerHTML = correct;
-    totalGuessesElement.innerHTML = totalGuesses;
+    var guessesSum = parseInt(totalGuesses) + parseInt(currentGameGuesses);
+    totalGuessesElement.innerHTML = parseInt(guessesSum);
     if(correct == 0) {
         avgGuessesElement.innerHTML = 0;
     }
     else {
-        avgGuessesElement.innerHTML = totalGuesses/correct;
+        avgGuessesElement.innerHTML = parseFloat(parseInt(totalGuesses)+parseInt(currentGameGuesses))/parseFloat(correct);
     }
 }
 
 function resetHistory() {
     localStorage.clear();
     word = null;
+    localStorage.removeItem("word");
     guessbox.value = "";
     correct = 0;
     totalGuesses = 0;
+    currentGameGuesses = 0;
     attempts = [];
     currentCorrect.innerHTML = correct;
     totalGuessesElement.innerHTML = totalGuesses;
@@ -51,15 +62,22 @@ function setUpGame(newWord) {
     console.log(newWord);
     guessbox.removeAttribute("readonly");
     word = newWord;
-    correct = 0;
-    gamesPlayed = 0;
+    localStorage.setItem("word", word);
     attempts = [];
     guessbox.value = "";
     messages.innerHTML = "";
+    currentGameGuesses = 0;
+    localStorage.setItem("currentGameGuesses", currentGameGuesses);
+    var guessesSum = parseInt(totalGuesses) + parseInt(currentGameGuesses);
+    totalGuessesElement.innerHTML = parseInt(guessesSum);
+    localStorage.setItem("correct", correct);
+    localStorage.setItem("totalGuesses", totalGuesses);
+    localStorage.setItem("attempts", attempts);
 }
 
 function newWord(newWord){
     word = newWord;
+    localStorage.setItem("word", word);
 }
 
 function setupMessage(attempt){
@@ -69,16 +87,24 @@ function setupMessage(attempt){
 function submitGuess(guess){
     var attempt={Status:"Correct!", Char:0, Loc:0, Length:"long"}
     guess = guess.toLowerCase();
-    totalGuesses++;
-    totalGuessesElement.innerHTML = totalGuesses;
-    localStorage.setItem("totalGuesses", totalGuesses);
+    currentGameGuesses ++;
+    localStorage.setItem("currentGameGuesses", currentGameGuesses);
+    var guessesSum = parseInt(totalGuesses) + parseInt(currentGameGuesses);
+    totalGuessesElement.innerHTML = parseInt(guessesSum);
     if(guess==word){
-        alert("correct");
-        setupMessage(attempt);
+        //setupMessage(attempt);
         getRandomWord(newWord);
+        alert("CORRECT!");
         correct++;
         currentCorrect.innerHTML = correct;
         localStorage.setItem("correct", correct);
+        totalGuesses = parseInt(totalGuesses) + parseInt(currentGameGuesses);
+        localStorage.setItem("totalGuesses", totalGuesses);
+        currentGameGuesses = 0;
+        localStorage.setItem("currentGameGuesses", currentGameGuesses);
+        var guessesSum = totalGuesses + currentGameGuesses;
+        console.log(guessesSum);
+        totalGuessesElement.innerHTML = parseInt(guessesSum);
     }
     else{
         alert("wrong");
@@ -89,8 +115,9 @@ function submitGuess(guess){
         avgGuessesElement.innerHTML = 0;
     }
     else {
-        avgGuessesElement.innerHTML = totalGuesses/correct;
+        avgGuessesElement.innerHTML = parseFloat(parseInt(totalGuesses)+parseInt(currentGameGuesses))/parseFloat(correct);
     }
+    localStorage.setItem("word", word);
 }
 
 function submitForm(){
