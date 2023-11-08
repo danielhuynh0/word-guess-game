@@ -15,11 +15,21 @@
         <div class="row">
             <div class="col-xs-12">
                 <h1>Evil Wordle</h1>
+                <p>Try to guess a word and we'll tell you how close you are.</p>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <h1>Evil Wordle</h1>
+                <form action="/action_page.php">
+                    <label for="guessBox">Your Guess: </label>
+                    <input type="text" id="guessbox" name="guessBox"><br><br>
+                    <button type="submit" class="btn btn-primary">Submit Guess</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <br><br><button id="newGame" class="btn btn-primary">New Game</button>
             </div>
         </div>
    </div>
