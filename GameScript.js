@@ -32,15 +32,39 @@ function loadedPage() {
             avgGuessesElement.innerHTML = parseFloat(parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]))/parseFloat(gameObject["correct"]);
         }
         winStreakElement.innerHTML = gameObject["winStreak"];
+
+        currentCorrect.innerHTML = gameObject["correct"];
+        var guessesSum = parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]);
+        totalGuessesElement.innerHTML = parseInt(guessesSum);
+        updateMessages();
+        if(gameObject["correct"] == 0) {
+            avgGuessesElement.innerHTML = 0;
+        }
+        else {
+            avgGuessesElement.innerHTML = parseFloat(parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]))/parseFloat(gameObject["correct"]);
+        }
+        winStreakElement.innerHTML = gameObject["winStreak"];
     }
     else {
         gameObject["word"] = null;
-        gameObject["attempts"] = [];
+        gameObject["attempts"] = JSON.stringify([]);
         gameObject["correct"] = 0;
         gameObject["totalGuesses"] = 0;
         gameObject["currentGameGuesses"] = 0;
         gameObject["winStreak"] = 0;
         localStorage.setItem("game", JSON.stringify(gameObject));
+        gameObject["attempts"] = [];
+
+        currentCorrect.innerHTML = gameObject["correct"];
+        var guessesSum = parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]);
+        totalGuessesElement.innerHTML = parseInt(guessesSum);
+        if(gameObject["correct"] == 0) {
+            avgGuessesElement.innerHTML = 0;
+        }
+        else {
+            avgGuessesElement.innerHTML = parseFloat(parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]))/parseFloat(gameObject["correct"]);
+        }
+        winStreakElement.innerHTML = gameObject["winStreak"];
     }
 
     if(gameObject["winStreak"] > 0) {
@@ -50,18 +74,11 @@ function loadedPage() {
         guessbox.removeAttribute("readonly");
     }
     console.log(gameObject);
+}
 
-    currentCorrect.innerHTML = gameObject["correct"];
-    var guessesSum = parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]);
-    totalGuessesElement.innerHTML = parseInt(guessesSum);
-    updateMessages();
-    if(gameObject["correct"] == 0) {
-        avgGuessesElement.innerHTML = 0;
-    }
-    else {
-        avgGuessesElement.innerHTML = parseFloat(parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]))/parseFloat(gameObject["correct"]);
-    }
-    winStreakElement.innerHTML = gameObject["winStreak"];
+function unloadedPage() {
+    console.log("unloaded");
+    localStorage.setItem("game", JSON.stringify(gameObject));
 }
 
 function resetHistory() {
@@ -77,6 +94,7 @@ function resetHistory() {
     totalGuessesElement.innerHTML = gameObject["totalGuesses"];
     avgGuessesElement.innerHTML = 0;
     winStreakElement.innerHTML = gameObject["winStreak"];
+    messages.innerHTML = "";
     guessbox.setAttribute("readonly", "readonly");
     localStorage.setItem("game", JSON.stringify(gameObject));
 }
@@ -100,6 +118,7 @@ function setUpGame(newWord) {
         avgGuessesElement.innerHTML = parseFloat(parseInt(gameObject["totalGuesses"])+parseInt(gameObject["currentGameGuesses"]))/parseFloat(gameObject["correct"]);
     }
     winStreakElement.innerHTML = gameObject["winStreak"];
+    localStorage.setItem("game", JSON.stringify(gameObject));
 }
 
 function newWord(newWord){
@@ -122,14 +141,14 @@ function updateMessages(){
 }
 
 function submitGuess(guess){
-    alert(gameObject["word"]);
     let len = gameObject["word"].length;
     var attempt={"Word":guess, "Status":"Correct!", "Char":len, "Loc":len, "Length":"just right"}
     guess = guess.toLowerCase();
     gameObject["currentGameGuesses"] = gameObject["currentGameGuesses"] + 1;
-    localStorage.setItem("game", JSON.stringify(gameObject));
+    console.log(gameObject["currentGameGuesses"]);
     var guessesSum = parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]);
     totalGuessesElement.innerHTML = parseInt(guessesSum);
+    localStorage.setItem("game", JSON.stringify(gameObject));
     console.log(gameObject["currentGameGuesses"]);
     if(guess==gameObject["word"]){
         //setupMessage(attempt);
