@@ -16,11 +16,9 @@ const avgGuessesElement = document.getElementById("avgGuesses");
 const winStreakElement = document.getElementById("winStreak");
 
 function loadedPage() {
-    console.log("current word is " + gameObject["word"]);
     if (localStorage.getItem("game") != null) {
         var retrievedGameObject = localStorage.getItem("game");
         gameObject = JSON.parse(retrievedGameObject);
-        console.log(gameObject["correct"]);
 
         currentCorrect.innerHTML = gameObject["correct"];
         gamesPlayedElement.innerHTML = gameObject["correct"];
@@ -76,11 +74,9 @@ function loadedPage() {
     else {
         guessbox.removeAttribute("readonly");
     }
-    console.log(gameObject);
 }
 
 function unloadedPage() {
-    console.log("unloaded");
     localStorage.setItem("game", JSON.stringify(gameObject));
 }
 
@@ -105,8 +101,6 @@ function resetHistory() {
 
 
 function setUpGame(newWord) {
-    console.log("restarted");
-    console.log(newWord);
     guessbox.removeAttribute("readonly");
     gameObject["word"] = newWord;
     gameObject["attempts"] = [];
@@ -130,7 +124,6 @@ function newWord(newWord){
 }
 
 function setupMessage(attempt){
-    console.log(attempt);
     messages.innerHTML = '<label>You guessed ' + attempt["Word"] + '. ' + attempt["Status"] + ' You\'re guess had ' +  attempt["Char"] +
     ' correct characters, ' + attempt["Loc"] + ' characters were in the right place. In length, the guess was ' + attempt["Length"] + 
     '.</label>' + messages.innerHTML;
@@ -149,11 +142,9 @@ function submitGuess(guess){
     var attempt={"Word":guess, "Status":"Correct!", "Char":len, "Loc":len, "Length":"just right"}
     guess = guess.toLowerCase();
     gameObject["currentGameGuesses"] = gameObject["currentGameGuesses"] + 1;
-    console.log(gameObject["currentGameGuesses"]);
     var guessesSum = parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]);
     totalGuessesElement.innerHTML = parseInt(guessesSum);
     localStorage.setItem("game", JSON.stringify(gameObject));
-    console.log(gameObject["currentGameGuesses"]);
     if(guess==gameObject["word"]){
         //setupMessage(attempt);
         gameObject["correct"] = gameObject["correct"] + 1;
@@ -162,7 +153,6 @@ function submitGuess(guess){
         gameObject["totalGuesses"] = parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]);
         gameObject["currentGameGuesses"] = 0;
         var guessesSum = parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]);
-        console.log(guessesSum);
         totalGuessesElement.innerHTML = parseInt(guessesSum);
         gameObject["winStreak"] = gameObject["winStreak"] + 1;
         winStreakElement.innerHTML = gameObject["winStreak"];
