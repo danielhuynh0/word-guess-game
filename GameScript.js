@@ -138,7 +138,7 @@ function setupMessage(attempt){
 
 function updateMessages(){
     for(var a of gameObject["attempts"]){
-        messages.innerHTML = '<label>You guessed \"' + a["Word"] + '\". ' + a["Status"] + ' You\'re guess had ' +  a["Char"] +
+        messages.innerHTML = '<label>You guessed \"' + a["Word"] + '\". ' + a["Status"] + ' Your guess had ' +  a["Char"] +
         ' correct characters, ' + a["Loc"] + ' characters were in the right place. In length, the guess was ' + a["Length"] + 
         '.</label>' + messages.innerHTML;
     }
