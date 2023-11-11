@@ -23,6 +23,7 @@ function loadedPage() {
         console.log(gameObject["correct"]);
 
         currentCorrect.innerHTML = gameObject["correct"];
+        gamesPlayedElement.innerHTML = gameObject["correct"];
         var guessesSum = parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]);
         totalGuessesElement.innerHTML = parseInt(guessesSum);
         if(gameObject["correct"] == 0) {
@@ -34,6 +35,7 @@ function loadedPage() {
         winStreakElement.innerHTML = gameObject["winStreak"];
 
         currentCorrect.innerHTML = gameObject["correct"];
+        gamesPlayedElement.innerHTML = gameObject["correct"];
         var guessesSum = parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]);
         totalGuessesElement.innerHTML = parseInt(guessesSum);
         updateMessages();
@@ -56,6 +58,7 @@ function loadedPage() {
         gameObject["attempts"] = [];
 
         currentCorrect.innerHTML = gameObject["correct"];
+        gamesPlayedElement.innerHTML = gameObject["correct"];
         var guessesSum = parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]);
         totalGuessesElement.innerHTML = parseInt(guessesSum);
         if(gameObject["correct"] == 0) {
@@ -91,6 +94,7 @@ function resetHistory() {
     gameObject["winStreak"] = 0;
     gameObject["attempts"] = [];
     currentCorrect.innerHTML = gameObject["correct"];
+    gamesPlayedElement.innerHTML = gameObject["correct"];
     totalGuessesElement.innerHTML = gameObject["totalGuesses"];
     avgGuessesElement.innerHTML = 0;
     winStreakElement.innerHTML = gameObject["winStreak"];
@@ -154,6 +158,7 @@ function submitGuess(guess){
         //setupMessage(attempt);
         gameObject["correct"] = gameObject["correct"] + 1;
         currentCorrect.innerHTML = gameObject["correct"];
+        gamesPlayedElement.innerHTML = gameObject["correct"];
         gameObject["totalGuesses"] = parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]);
         gameObject["currentGameGuesses"] = 0;
         var guessesSum = parseInt(gameObject["totalGuesses"]) + parseInt(gameObject["currentGameGuesses"]);
